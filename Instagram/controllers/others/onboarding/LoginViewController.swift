@@ -17,9 +17,15 @@ class LoginViewController: UIViewController {
     private let headerView: UIView = {
         let view = UIView()
         view.clipsToBounds = true
-        let backgroundImageView = UIImageView(image: UIImage(named: "gradient"))
+//         let backgroundImageView = UIImageView(image: UIImage(named: "gradient"))
+//         view.addSubview(backgroundImageView)
+        return view
+    }()
+    
+    private let bottomView: UIView = {
+       let view = UIView()
+        view.clipsToBounds = true
         view.layer.cornerRadius = Constants.cornerRadius * 3
-        view.addSubview(backgroundImageView)
         return view
     }()
     
@@ -62,6 +68,7 @@ class LoginViewController: UIViewController {
        let button = UIButton()
         button.setTitle("Terms & Conditions", for: .normal)
         button.setTitleColor(.secondaryLabel, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Arial", size: 16)
        return button
     }()
     
@@ -69,6 +76,7 @@ class LoginViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Privacy Policy", for: .normal)
         button.setTitleColor(.secondaryLabel, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Arial", size: 16)
         return button
     }()
     
@@ -81,7 +89,7 @@ class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         createAccountButton.addTarget(self, action: #selector(createAccountButtonTapped), for: .touchUpInside)
         termsButton.addTarget(self, action: #selector(TermsButtonTapped), for: .touchUpInside)
@@ -98,13 +106,33 @@ class LoginViewController: UIViewController {
         super.viewDidLayoutSubviews()
         // setup views layout
         headerView.frame = CGRect(x: 0,
-                                  y: 0,
+                                  y: view.safeAreaInsets.top,
                                   width: view.width,
-                                  height: view.frame.height / 3.0)
+                                  height: view.height / 3.0)
         configureHeaderView()
         
+        bottomView.frame = CGRect(x: 0,
+                                  y: headerView.bottom - 20,
+                                  width: view.width,
+                                  height: view.height - headerView.height)
+        configureBottomView()
+        
+        
+    }
+    
+    func configureBottomView(){
+        
+        bottomView.backgroundColor = .systemBackground
+        
+        bottomView.addSubview(userEmailField)
+        bottomView.addSubview(passwordField)
+        bottomView.addSubview(loginButton)
+        bottomView.addSubview(createAccountButton)
+        bottomView.addSubview(termsButton)
+        bottomView.addSubview(privacyButton)
+
         userEmailField.frame = CGRect(x: 25,
-                                      y: headerView.bottom + 60,
+                                      y: 50,
                                       width: view.width - 50,
                                       height: 52.0)
         
@@ -124,30 +152,30 @@ class LoginViewController: UIViewController {
                                       height: 52.0)
         
         termsButton.frame = CGRect(x: 10,
-                                   y: view.height - view.safeAreaInsets.bottom - 100,
+                                   y: createAccountButton.bottom + 150,
                                       width: view.width - 20,
                                       height: 50.0)
         
         privacyButton.frame = CGRect(x: 10,
-                                      y: view.height - view.safeAreaInsets.bottom - 50,
+                                     y: createAccountButton.bottom + 175,
                                       width: view.width - 20,
                                       height: 50.0)
-        
     }
     
     func configureHeaderView(){
-        
-        guard headerView.subviews.count == 1 else {
-            return
-        }
 
-        guard let backgroundView = headerView.subviews.first else {
-            return
-        }
-
-        backgroundView.frame = headerView.bounds
         
-        let imageView = UIImageView(image: UIImage(named: "logo3"))
+//        guard headerView.subviews.count == 1 else {
+//            return
+//        }
+//
+//        guard let backgroundView = headerView.subviews.first else {
+//            return
+//        }
+//
+//        backgroundView.frame = headerView.bounds
+        
+        let imageView = UIImageView(image: UIImage(named: "logo2"))
         headerView.addSubview(imageView)
         imageView.contentMode = .scaleAspectFit
         imageView.frame = CGRect(x: headerView.width / 4.0,
@@ -158,12 +186,7 @@ class LoginViewController: UIViewController {
     
     func addSubViews() {
         view.addSubview(headerView)
-        view.addSubview(userEmailField)
-        view.addSubview(passwordField)
-        view.addSubview(loginButton)
-        view.addSubview(termsButton)
-        view.addSubview(privacyButton)
-        view.addSubview(createAccountButton)
+        view.addSubview(bottomView)
     }
     
     @objc func loginButtonTapped(){
