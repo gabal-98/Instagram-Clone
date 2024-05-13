@@ -14,4 +14,5 @@ target 'Instagram' do
   pod 'FirebaseAnalytics'
   pod 'Firebase/Crashlytics'
   pod 'Firebase/Storage'
+  pod 'SDWebImage'
 end
